@@ -1,4 +1,22 @@
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const StyledDeck = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+`;
+
+const StyledCard = styled.div`
+  --img-ratio: calc(500 / 726);
+  --card-width: calc(100vw / 13);
+  width: var(--card-width);
+  height: calc(var(--card-width) / var(--img-ratio));
+  background-image: url(${(props) => props.imgPath});
+  background-size: contain;
+  background-repeat: no-repeat;
+`;
 
 export default function Deck() {
   const [cards, setCards] = useState([]);
@@ -34,26 +52,29 @@ export default function Deck() {
       suit.push({
         rank,
         suitName,
-        img: `/src/assets/${suitName}_${rank}.png`,
+        img: `/assets/${suitName}_${rank}.png`,
       })
     );
     return suit;
   };
 
-  useEffect(() => {
-    setDeck();
-  }, []);
+  useEffect(
+    () => {
+      setDeck();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   return (
-    <div>
+    <StyledDeck>
       {cards.length > 1 &&
         cards.map((card) => (
-          <img
+          <StyledCard
             key={`${card.suitName} ${card.rank}`}
-            alt="card"
-            src={card.img}
-          />
+            imgPath={card.img}
+          ></StyledCard>
         ))}
-    </div>
+    </StyledDeck>
   );
 }
