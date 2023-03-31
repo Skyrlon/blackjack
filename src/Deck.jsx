@@ -58,6 +58,14 @@ export default function Deck() {
     return suit;
   };
 
+  const shuffleCards = () => {
+    const suffledDeck = cards
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+    setCards(suffledDeck);
+  };
+
   useEffect(
     () => {
       setDeck();
@@ -75,6 +83,7 @@ export default function Deck() {
             imgPath={card.img}
           ></StyledCard>
         ))}
+      <button onClick={shuffleCards}>SHUFFLE</button>
     </StyledDeck>
   );
 }
