@@ -81,8 +81,9 @@ export default function Deck() {
           <StyledCard
             key={`${card.suitName} ${card.rank}`}
             imgPath={card.img}
-          ></StyledCard>
+          />
         ))}
+      <StyledCard imgPath={`/assets/card_back.png`} />
       <button onClick={shuffleCards}>SHUFFLE</button>
     </StyledDeck>
   );
