@@ -5,7 +5,6 @@ const StyledDeck = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 100%;
 `;
 
 const StyledCard = styled.div`
@@ -13,7 +12,7 @@ const StyledCard = styled.div`
   --card-width: calc(100vw / 13);
   width: var(--card-width);
   height: calc(var(--card-width) / var(--img-ratio));
-  background-image: url(${(props) => props.imgPath});
+  background-image: url("/assets/card_back.png");
   background-size: contain;
   background-repeat: no-repeat;
 `;
@@ -76,15 +75,7 @@ export default function Deck() {
 
   return (
     <StyledDeck>
-      {cards.length > 1 &&
-        cards.map((card) => (
-          <StyledCard
-            key={`${card.suitName} ${card.rank}`}
-            imgPath={card.img}
-          />
-        ))}
-      <StyledCard imgPath={`/assets/card_back.png`} />
-      <button onClick={shuffleCards}>SHUFFLE</button>
+      <StyledCard />
     </StyledDeck>
   );
 }
