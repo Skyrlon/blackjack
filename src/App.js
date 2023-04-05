@@ -50,7 +50,7 @@ function App() {
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
-    setCards(suffledDeck);
+    return suffledDeck;
   };
 
   useEffect(
@@ -62,14 +62,14 @@ function App() {
   );
 
   const startGame = () => {
-    drawCard("dealer");
+    drawCard("dealer", shuffleCards());
   };
 
-  const drawCard = (player) => {
-    const chosenCard = cards[0];
+  const drawCard = (player, deck) => {
+    const chosenCard = deck[0];
     if (player === "dealer") {
       setDealerHand([...dealerHand, chosenCard]);
-      setCards(cards.filter((card) => card.img !== chosenCard.img));
+      setCards(deck.filter((card) => card.img !== chosenCard.img));
     }
   };
 

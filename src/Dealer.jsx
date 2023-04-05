@@ -5,6 +5,9 @@ const StyledDealer = styled.div`
   flex-direction: row;
   justify-content: center;
   gap: 1rem;
+  --img-ratio: calc(500 / 726);
+  --card-width: calc(100vw / 13);
+  height: calc(var(--card-width) / var(--img-ratio));
 `;
 
 const StyledCard = styled.div`
