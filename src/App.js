@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Deck from "./Deck";
 import Dealer from "./Dealer";
+import Player from "./Player";
 
 function App() {
   const [dealerHand, setDealerHand] = useState([]);
-
+  const [playerHand, setPlayerHand] = useState([]);
   const [cards, setCards] = useState([]);
 
   const setDeck = () => {
@@ -62,21 +63,30 @@ function App() {
   );
 
   const startGame = () => {
-    drawCard("dealer", shuffleCards());
+    drawCard(["dealer", "player", "dealer", "player"], shuffleCards());
   };
 
-  const drawCard = (player, deck) => {
-    const chosenCard = deck[0];
-    if (player === "dealer") {
-      setDealerHand([...dealerHand, chosenCard]);
-      setCards(deck.filter((card) => card.img !== chosenCard.img));
-    }
+  const drawCard = (drawers, deck) => {
+    const newDealerCards = [];
+    const newPlayerCards = [];
+    drawers.forEach((drawer, index) => {
+      if (drawer === "dealer") {
+        newDealerCards.push(deck[index]);
+      }
+      if (drawer === "player") {
+        newPlayerCards.push(deck[index]);
+      }
+    });
+    setDealerHand([...dealerHand, ...newDealerCards]);
+    setPlayerHand([...dealerHand, ...newPlayerCards]);
+    setCards(deck.slice(drawers.length));
   };
 
   return (
     <div className="App">
       <Dealer hand={dealerHand} />
       <Deck />
+      <Player hand={playerHand} />
       <button onClick={startGame}>Start</button>
     </div>
   );
