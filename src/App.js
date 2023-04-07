@@ -5,6 +5,7 @@ import Dealer from "./Dealer";
 import Player from "./Player";
 
 function App() {
+  const [isGameStarted, setIsGameStarted] = useState(false);
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [cards, setCards] = useState([]);
@@ -63,7 +64,12 @@ function App() {
   );
 
   const startGame = () => {
+    setIsGameStarted(true);
     drawCard(["dealer", "player", "dealer", "player"], shuffleCards());
+  };
+
+  const playerDrawCard = () => {
+    drawCard(["player"], cards);
   };
 
   const drawCard = (drawers, deck) => {
@@ -78,7 +84,7 @@ function App() {
       }
     });
     setDealerHand([...dealerHand, ...newDealerCards]);
-    setPlayerHand([...dealerHand, ...newPlayerCards]);
+    setPlayerHand([...playerHand, ...newPlayerCards]);
     setCards(deck.slice(drawers.length));
   };
 
@@ -87,7 +93,8 @@ function App() {
       <Dealer hand={dealerHand} />
       <Deck />
       <Player hand={playerHand} />
-      <button onClick={startGame}>Start</button>
+      {!isGameStarted && <button onClick={startGame}>Start</button>}
+      {isGameStarted && <button onClick={playerDrawCard}>Draw</button>}
     </div>
   );
 }
