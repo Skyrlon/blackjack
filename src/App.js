@@ -55,6 +55,43 @@ function App() {
     return suffledDeck;
   };
 
+  const getHandScore = (hand) => {
+    const ranksValues = [
+      { rank: ["ace"], values: [1, 11] },
+      { rank: ["two"], values: [2] },
+      { rank: ["three"], values: [3] },
+      { rank: ["four"], values: [4] },
+      { rank: ["five"], values: [5] },
+      { rank: ["six"], values: [6] },
+      { rank: ["seven"], values: [7] },
+      { rank: ["eight"], values: [8] },
+      { rank: ["nine"], values: [9] },
+      { rank: ["ten", "jack", "queen", "king"], values: [10] },
+    ];
+    let scoreWithoutAces = hand
+      .filter((card) => card.rank !== "ace")
+      .reduce(
+        (accumulator, currentValue) =>
+          accumulator +
+          Number(
+            ranksValues.find((x) => x.rank.some((y) => y === currentValue.rank))
+              .values[0]
+          ),
+        0
+      );
+    if (hand.some((card) => card.rank === "ace")) {
+      const aces = hand.filter((card) => card.rank === "ace");
+      aces.forEach((ace) => {
+        if (scoreWithoutAces + 11 > 21) {
+          scoreWithoutAces = scoreWithoutAces + 1;
+        } else {
+          scoreWithoutAces = scoreWithoutAces + 11;
+        }
+      });
+    }
+    return scoreWithoutAces;
+  };
+
   useEffect(
     () => {
       setDeck();
@@ -90,9 +127,9 @@ function App() {
 
   return (
     <div className="App">
-      <Dealer hand={dealerHand} />
+      <Dealer hand={dealerHand} score={getHandScore(dealerHand)} />
       <Deck />
-      <Player hand={playerHand} />
+      <Player hand={playerHand} score={getHandScore(playerHand)} />
       {!isGameStarted && <button onClick={startGame}>Start</button>}
       {isGameStarted && <button onClick={playerDrawCard}>Draw</button>}
     </div>

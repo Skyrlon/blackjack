@@ -20,7 +20,7 @@ const StyledCard = styled.div`
   background-image: url(${(props) => props.$imgPath});
 `;
 
-export default function Player({ hand }) {
+export default function Player({ hand, score }) {
   return (
     <StyledPlayer>
       {hand.map((card) => (
@@ -29,6 +29,7 @@ export default function Player({ hand }) {
           $imgPath={card.img}
         ></StyledCard>
       ))}
+      <span>{score}</span>
     </StyledPlayer>
   );
 }
