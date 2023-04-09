@@ -57,16 +57,15 @@ function App() {
 
   const getHandScore = (hand) => {
     const ranksValues = [
-      { rank: ["ace"], values: [1, 11] },
-      { rank: ["two"], values: [2] },
-      { rank: ["three"], values: [3] },
-      { rank: ["four"], values: [4] },
-      { rank: ["five"], values: [5] },
-      { rank: ["six"], values: [6] },
-      { rank: ["seven"], values: [7] },
-      { rank: ["eight"], values: [8] },
-      { rank: ["nine"], values: [9] },
-      { rank: ["ten", "jack", "queen", "king"], values: [10] },
+      { ranks: ["two"], value: 2 },
+      { ranks: ["three"], value: 3 },
+      { ranks: ["four"], value: 4 },
+      { ranks: ["five"], value: 5 },
+      { ranks: ["six"], value: 6 },
+      { ranks: ["seven"], value: 7 },
+      { ranks: ["eight"], value: 8 },
+      { ranks: ["nine"], value: 9 },
+      { ranks: ["ten", "jack", "queen", "king"], value: 10 },
     ];
     let scoreWithoutAces = hand
       .filter((card) => card.rank !== "ace")
@@ -74,8 +73,8 @@ function App() {
         (accumulator, currentValue) =>
           accumulator +
           Number(
-            ranksValues.find((x) => x.rank.some((y) => y === currentValue.rank))
-              .values[0]
+            ranksValues.find((x) => x.ranks.some((y) => y === currentValue.rank))
+              .value
           ),
         0
       );

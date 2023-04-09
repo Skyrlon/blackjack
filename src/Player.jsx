@@ -29,7 +29,7 @@ export default function Player({ hand, score }) {
           $imgPath={card.img}
         ></StyledCard>
       ))}
-      <span>{score}</span>
+      {score > 0 && <span>{score}</span>}
     </StyledPlayer>
   );
 }
