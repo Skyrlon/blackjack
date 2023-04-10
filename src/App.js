@@ -6,6 +6,8 @@ import Player from "./Player";
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [stateOfGame, setStateOfGame] = useState("");
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [cards, setCards] = useState([]);
@@ -73,8 +75,9 @@ function App() {
         (accumulator, currentValue) =>
           accumulator +
           Number(
-            ranksValues.find((x) => x.ranks.some((y) => y === currentValue.rank))
-              .value
+            ranksValues.find((x) =>
+              x.ranks.some((y) => y === currentValue.rank)
+            ).value
           ),
         0
       );
@@ -98,6 +101,13 @@ function App() {
     // eslint-disable-next-line
     []
   );
+
+  useEffect(() => {
+    if (getHandScore(playerHand) > 21) {
+      setIsGameOver(true);
+      setStateOfGame("Busted");
+    }
+  }, [playerHand]);
 
   const startGame = () => {
     setIsGameStarted(true);
@@ -130,7 +140,10 @@ function App() {
       <Deck />
       <Player hand={playerHand} score={getHandScore(playerHand)} />
       {!isGameStarted && <button onClick={startGame}>Start</button>}
-      {isGameStarted && <button onClick={playerDrawCard}>Draw</button>}
+      {isGameStarted && !isGameOver && (
+        <button onClick={playerDrawCard}>Draw</button>
+      )}
+      {isGameOver && <span>{stateOfGame}</span>}
     </div>
   );
 }
