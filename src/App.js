@@ -7,6 +7,7 @@ import Player from "./Player";
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isPlayerTurn, setIsPlayerTurn] = useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
@@ -111,11 +112,16 @@ function App() {
 
   const startGame = () => {
     setIsGameStarted(true);
+    setIsPlayerTurn(true);
     drawCard(["dealer", "player", "dealer", "player"], shuffleCards());
   };
 
   const playerDrawCard = () => {
     drawCard(["player"], cards);
+  };
+
+  const playerStand = () => {
+    drawCard(["dealer"],cards);
   };
 
   const drawCard = (drawers, deck) => {
@@ -140,8 +146,11 @@ function App() {
       <Deck />
       <Player hand={playerHand} score={getHandScore(playerHand)} />
       {!isGameStarted && <button onClick={startGame}>Start</button>}
-      {isGameStarted && !isGameOver && (
-        <button onClick={playerDrawCard}>Draw</button>
+      {isGameStarted && !isGameOver && isPlayerTurn && (
+        <>
+          <button onClick={playerDrawCard}>Draw</button>
+          <button onClick={playerStand}>Stand</button>
+        </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
     </div>
