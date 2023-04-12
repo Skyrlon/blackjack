@@ -121,7 +121,18 @@ function App() {
   };
 
   const playerStand = () => {
-    drawCard(["dealer"],cards);
+    setIsPlayerTurn(false);
+    dealerDrawCards();
+  };
+
+  const dealerDrawCards = () => {
+    let newDealerHand = [...dealerHand];
+    let i = 0;
+    while (getHandScore(newDealerHand) < 17) {
+      i++;
+      newDealerHand.push(cards[i]);
+    }
+    setDealerHand([...newDealerHand]);
   };
 
   const drawCard = (drawers, deck) => {
