@@ -95,29 +95,17 @@ function App() {
     return scoreWithoutAces;
   };
 
-  useEffect(
-    () => {
-      setDeck();
-    },
-    // eslint-disable-next-line
-    []
-  );
-
-  useEffect(() => {
-    if (getHandScore(playerHand) > 21) {
-      setIsGameOver(true);
-      setStateOfGame("Busted");
-    }
-  }, [playerHand]);
-
   const startGame = () => {
     setIsGameStarted(true);
     setIsPlayerTurn(true);
-    drawCard(["dealer", "player", "dealer", "player"], shuffleCards());
+    drawFirstCards();
   };
 
   const playerDrawCard = () => {
-    drawCard(["player"], cards);
+    let newPlayerHand = [...playerHand];
+    newPlayerHand.push(cards[0]);
+    setPlayerHand([...newPlayerHand]);
+    setCards(cards.slice(1));
   };
 
   const playerStand = () => {
@@ -135,21 +123,29 @@ function App() {
     setDealerHand([...newDealerHand]);
   };
 
-  const drawCard = (drawers, deck) => {
-    const newDealerCards = [];
-    const newPlayerCards = [];
-    drawers.forEach((drawer, index) => {
-      if (drawer === "dealer") {
-        newDealerCards.push(deck[index]);
-      }
-      if (drawer === "player") {
-        newPlayerCards.push(deck[index]);
-      }
-    });
+  const drawFirstCards = () => {
+    const suffledDeck = shuffleCards();
+    const newDealerCards = [suffledDeck[0], suffledDeck[2]];
+    const newPlayerCards = [suffledDeck[1], suffledDeck[3]];
     setDealerHand([...dealerHand, ...newDealerCards]);
     setPlayerHand([...playerHand, ...newPlayerCards]);
-    setCards(deck.slice(drawers.length));
+    setCards(suffledDeck.slice(4));
   };
+
+  useEffect(
+    () => {
+      setDeck();
+    },
+    // eslint-disable-next-line
+    []
+  );
+
+  useEffect(() => {
+    if (getHandScore(playerHand) > 21) {
+      setIsGameOver(true);
+      setStateOfGame("Busted");
+    }
+  }, [playerHand]);
 
   return (
     <div className="App">
