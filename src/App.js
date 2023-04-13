@@ -117,10 +117,11 @@ function App() {
     let newDealerHand = [...dealerHand];
     let i = 0;
     while (getHandScore(newDealerHand) < 17) {
-      i++;
       newDealerHand.push(cards[i]);
+      i++;
     }
     setDealerHand([...newDealerHand]);
+    setCards(cards.slice(i));
   };
 
   const drawFirstCards = () => {
