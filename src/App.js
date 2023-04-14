@@ -110,7 +110,12 @@ function App() {
 
   const playerStand = () => {
     setIsPlayerTurn(false);
-    dealerDrawCards();
+    if (getHandScore(dealerHand) > getHandScore(playerHand)) {
+      setIsGameOver(true);
+      setStateOfGame("Loose");
+    } else {
+      dealerDrawCards();
+    }
   };
 
   const dealerDrawCards = () => {
