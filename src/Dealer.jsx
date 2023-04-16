@@ -20,16 +20,18 @@ const StyledCard = styled.div`
   background-image: url(${(props) => props.$imgPath});
 `;
 
-export default function Dealer({ hand, score }) {
+export default function Dealer({ hand, score, showSecondCard }) {
+  const backCardPath = "/assets/card_back.png";
+
   return (
     <StyledDealer>
-      {hand.map((card) => (
+      {hand.map((card, index) => (
         <StyledCard
           key={`${card.suitName} ${card.rank}`}
-          $imgPath={card.img}
+          $imgPath={!showSecondCard && index === 1 ? backCardPath : card.img}
         ></StyledCard>
       ))}
-      {score > 0 && <span>{score}</span>}
+      {score > 0 && showSecondCard && <span>{score}</span>}
     </StyledDealer>
   );
 }

@@ -8,6 +8,7 @@ function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlayerTurn, setIsPlayerTurn] = useState(false);
+  const [isPlayerStoppedDrawCards, setIsPlayerStoppedDrawCards] = useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
@@ -110,6 +111,7 @@ function App() {
 
   const playerStand = () => {
     setIsPlayerTurn(false);
+    setIsPlayerStoppedDrawCards(true);
     if (getHandScore(dealerHand) > getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Loose");
@@ -155,7 +157,11 @@ function App() {
 
   return (
     <div className="App">
-      <Dealer hand={dealerHand} score={getHandScore(dealerHand)} />
+      <Dealer
+        hand={dealerHand}
+        score={getHandScore(dealerHand)}
+        showSecondCard={isPlayerStoppedDrawCards}
+      />
       <Deck />
       <Player hand={playerHand} score={getHandScore(playerHand)} />
       {!isGameStarted && <button onClick={startGame}>Start</button>}
