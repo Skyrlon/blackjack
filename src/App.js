@@ -8,19 +8,20 @@ function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlayerTurn, setIsPlayerTurn] = useState(false);
-  const [isPlayerStoppedDrawCards, setIsPlayerStoppedDrawCards] = useState(false);
+  const [isPlayerStoppedDrawCards, setIsPlayerStoppedDrawCards] =
+    useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [cards, setCards] = useState([]);
 
-  const setDeck = () => {
-    setCards([
+  const getDeck = () => {
+    return [
       ...setSuit("clubs"),
       ...setSuit("diamonds"),
       ...setSuit("hearts"),
       ...setSuit("spades"),
-    ]);
+    ];
   };
 
   const setSuit = (suitName) => {
@@ -52,7 +53,7 @@ function App() {
   };
 
   const shuffleCards = () => {
-    const suffledDeck = cards
+    const suffledDeck = getDeck()
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
@@ -102,6 +103,14 @@ function App() {
     drawFirstCards();
   };
 
+  const restartGame = () => {
+    setIsGameStarted(true);
+    setIsGameOver(false);
+    playerHand.length = 0;
+    dealerHand.length = 0;
+    drawFirstCards();
+  };
+
   const playerDrawCard = () => {
     let newPlayerHand = [...playerHand];
     newPlayerHand.push(cards[0]);
@@ -140,14 +149,6 @@ function App() {
     setCards(suffledDeck.slice(4));
   };
 
-  useEffect(
-    () => {
-      setDeck();
-    },
-    // eslint-disable-next-line
-    []
-  );
-
   useEffect(() => {
     if (getHandScore(playerHand) > 21) {
       setIsGameOver(true);
@@ -165,6 +166,7 @@ function App() {
       <Deck />
       <Player hand={playerHand} score={getHandScore(playerHand)} />
       {!isGameStarted && <button onClick={startGame}>Start</button>}
+      {isGameOver && <button onClick={restartGame}>Restart</button>}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
           <button onClick={playerDrawCard}>Draw</button>

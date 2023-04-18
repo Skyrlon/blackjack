@@ -15,7 +15,7 @@ const StyledCard = styled.div`
   --card-width: calc(100vw / 13);
   width: var(--card-width);
   height: calc(var(--card-width) / var(--img-ratio));
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-image: url(${(props) => props.$imgPath});
 `;
