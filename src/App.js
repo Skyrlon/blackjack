@@ -99,15 +99,18 @@ function App() {
 
   const startGame = () => {
     setIsGameStarted(true);
-    setIsPlayerTurn(true);
     drawFirstCards();
   };
 
   const restartGame = () => {
     setIsGameStarted(true);
     setIsGameOver(false);
+    setIsPlayerTurn(false);
+    setIsPlayerStoppedDrawCards(false);
+    setStateOfGame("");
     playerHand.length = 0;
     dealerHand.length = 0;
+    cards.length = 0;
     drawFirstCards();
   };
 
@@ -146,6 +149,7 @@ function App() {
     const newPlayerCards = [suffledDeck[1], suffledDeck[3]];
     setDealerHand([...dealerHand, ...newDealerCards]);
     setPlayerHand([...playerHand, ...newPlayerCards]);
+    setIsPlayerTurn(true);
     setCards(suffledDeck.slice(4));
   };
 
