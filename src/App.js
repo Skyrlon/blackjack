@@ -127,6 +127,21 @@ function App() {
     if (getHandScore(dealerHand) > getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Loose");
+    } else if (
+      getHandScore(playerHand) === 21 &&
+      playerHand.length === 2 &&
+      getHandScore(dealerHand) === 21 &&
+      dealerHand.length === 2
+    ) {
+      setIsGameOver(true);
+      setStateOfGame("Black Jack");
+    } else if (
+      getHandScore(playerHand) === 21 &&
+      playerHand.length === 2
+      
+    ) {
+      setIsGameOver(true);
+      setStateOfGame("Black Jack");
     } else {
       dealerDrawCards();
     }
