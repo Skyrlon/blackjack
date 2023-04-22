@@ -135,11 +135,7 @@ function App() {
     ) {
       setIsGameOver(true);
       setStateOfGame("Black Jack");
-    } else if (
-      getHandScore(playerHand) === 21 &&
-      playerHand.length === 2
-      
-    ) {
+    } else if (getHandScore(playerHand) === 21 && playerHand.length === 2) {
       setIsGameOver(true);
       setStateOfGame("Black Jack");
     } else {
@@ -154,6 +150,22 @@ function App() {
       newDealerHand.push(cards[i]);
       i++;
     }
+    if (getHandScore(newDealerHand) > 21) {
+      setIsGameOver(true);
+      setStateOfGame("Win");
+    } else if (getHandScore(newDealerHand) > getHandScore(playerHand)) {
+      setIsGameOver(true);
+      setStateOfGame("Loose");
+    }
+    else if (getHandScore(newDealerHand) === getHandScore(playerHand)) {
+      setIsGameOver(true);
+      setStateOfGame("Push");
+    }
+    else if (getHandScore(newDealerHand) < getHandScore(playerHand)) {
+      setIsGameOver(true);
+      setStateOfGame("Win");
+    }
+
     setDealerHand([...newDealerHand]);
     setCards(cards.slice(i));
   };
