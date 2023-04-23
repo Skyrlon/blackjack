@@ -3,6 +3,7 @@ import "./App.css";
 import Deck from "./Deck";
 import Dealer from "./Dealer";
 import Player from "./Player";
+import Bets from "./Bets";
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -11,6 +12,8 @@ function App() {
   const [isPlayerStoppedDrawCards, setIsPlayerStoppedDrawCards] =
     useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
+  const [bankRoll, setBankRoll] = useState(1000);
+  const [currentBet, setCurrentBet] = useState(undefined);
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
   const [cards, setCards] = useState([]);
@@ -97,23 +100,6 @@ function App() {
     return scoreWithoutAces;
   };
 
-  const startGame = () => {
-    setIsGameStarted(true);
-    drawFirstCards();
-  };
-
-  const restartGame = () => {
-    setIsGameStarted(true);
-    setIsGameOver(false);
-    setIsPlayerTurn(false);
-    setIsPlayerStoppedDrawCards(false);
-    setStateOfGame("");
-    playerHand.length = 0;
-    dealerHand.length = 0;
-    cards.length = 0;
-    drawFirstCards();
-  };
-
   const playerDrawCard = () => {
     let newPlayerHand = [...playerHand];
     newPlayerHand.push(cards[0]);
@@ -156,12 +142,10 @@ function App() {
     } else if (getHandScore(newDealerHand) > getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Loose");
-    }
-    else if (getHandScore(newDealerHand) === getHandScore(playerHand)) {
+    } else if (getHandScore(newDealerHand) === getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Push");
-    }
-    else if (getHandScore(newDealerHand) < getHandScore(playerHand)) {
+    } else if (getHandScore(newDealerHand) < getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Win");
     }
@@ -180,6 +164,20 @@ function App() {
     setCards(suffledDeck.slice(4));
   };
 
+  const handleBetChosen = (bet) => {
+    setCurrentBet(bet);
+    setBankRoll(bankRoll - bet);
+    setIsGameStarted(true);
+    setIsGameOver(false);
+    setIsPlayerTurn(false);
+    setIsPlayerStoppedDrawCards(false);
+    setStateOfGame("");
+    playerHand.length = 0;
+    dealerHand.length = 0;
+    cards.length = 0;
+    drawFirstCards();
+  };
+
   useEffect(() => {
     if (getHandScore(playerHand) > 21) {
       setIsGameOver(true);
@@ -187,8 +185,28 @@ function App() {
     }
   }, [playerHand]);
 
+  useEffect(
+    () => {
+      if (stateOfGame === "Win") {
+        setBankRoll(bankRoll + currentBet * 2);
+      }
+      if (stateOfGame === "Busted" || stateOfGame === "Loose") {
+        return;
+      }
+      if (stateOfGame === "Push") {
+        setBankRoll(bankRoll + currentBet);
+      }
+      if (stateOfGame === "Black Jack") {
+        setBankRoll(bankRoll + currentBet * 2.5);
+      }
+    },
+    // eslint-disable-next-line
+    [stateOfGame]
+  );
+
   return (
     <div className="App">
+      <div>{bankRoll}</div>
       <Dealer
         hand={dealerHand}
         score={getHandScore(dealerHand)}
@@ -196,8 +214,7 @@ function App() {
       />
       <Deck />
       <Player hand={playerHand} score={getHandScore(playerHand)} />
-      {!isGameStarted && <button onClick={startGame}>Start</button>}
-      {isGameOver && <button onClick={restartGame}>Restart</button>}
+      {(!isGameStarted || isGameOver) && <Bets chosenBet={handleBetChosen} />}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
           <button onClick={playerDrawCard}>Draw</button>
