@@ -105,11 +105,28 @@ function App() {
     newPlayerHand.push(cards[0]);
     setPlayerHand([...newPlayerHand]);
     setCards(cards.slice(1));
+    if (getHandScore(newPlayerHand) > 21) {
+      setIsGameOver(true);
+      setStateOfGame("Busted");
+    }
+  };
+
+  const playerDoubleDown = () => {
+    setBankRoll(bankRoll - currentBet);
+    setCurrentBet(currentBet * 2);
+    let newPlayerHand = [...playerHand];
+    newPlayerHand.push(cards[0]);
+    setPlayerHand([...newPlayerHand]);
+    setCards(cards.slice(1));
+    if (getHandScore(newPlayerHand) > 21) {
+      setIsGameOver(true);
+      setStateOfGame("Busted");
+    } else {
+      dealerDrawCards();
+    }
   };
 
   const playerStand = () => {
-    setIsPlayerTurn(false);
-    setIsPlayerStoppedDrawCards(true);
     if (getHandScore(dealerHand) > getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Loose");
@@ -130,6 +147,8 @@ function App() {
   };
 
   const dealerDrawCards = () => {
+    setIsPlayerTurn(false);
+    setIsPlayerStoppedDrawCards(true);
     let newDealerHand = [...dealerHand];
     let i = 0;
     while (getHandScore(newDealerHand) < 17) {
@@ -149,7 +168,6 @@ function App() {
       setIsGameOver(true);
       setStateOfGame("Win");
     }
-
     setDealerHand([...newDealerHand]);
     setCards(cards.slice(i));
   };
@@ -177,13 +195,6 @@ function App() {
     cards.length = 0;
     drawFirstCards();
   };
-
-  useEffect(() => {
-    if (getHandScore(playerHand) > 21) {
-      setIsGameOver(true);
-      setStateOfGame("Busted");
-    }
-  }, [playerHand]);
 
   useEffect(
     () => {
@@ -219,6 +230,7 @@ function App() {
         <>
           <button onClick={playerDrawCard}>Draw</button>
           <button onClick={playerStand}>Stand</button>
+          <button onClick={playerDoubleDown}>Double Down</button>
         </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
