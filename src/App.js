@@ -12,11 +12,14 @@ function App() {
   const [isPlayerStoppedDrawCards, setIsPlayerStoppedDrawCards] =
     useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
+  const [maybeDealerGotBlackJack, setMaybeDealerGotBlackJack] = useState(false);
+
   const [bankRoll, setBankRoll] = useState(1000);
   const [currentBet, setCurrentBet] = useState(undefined);
+
+  const [cards, setCards] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
   const [playerHand, setPlayerHand] = useState([]);
-  const [cards, setCards] = useState([]);
 
   const getDeck = () => {
     return [
@@ -179,6 +182,7 @@ function App() {
     setDealerHand([...dealerHand, ...newDealerCards]);
     setPlayerHand([...playerHand, ...newPlayerCards]);
     setIsPlayerTurn(true);
+    setMaybeDealerGotBlackJack(newDealerCards[0].rank === "ace");
     setCards(suffledDeck.slice(4));
   };
 
@@ -194,6 +198,41 @@ function App() {
     dealerHand.length = 0;
     cards.length = 0;
     drawFirstCards();
+  };
+
+  const playerTakeAssurance = (takingAssurance) => {
+    if (takingAssurance) {
+      const insurance = currentBet / 2;
+      if (getHandScore(dealerHand) === 21 && getHandScore(playerHand) !== 21) {
+        isGameOver(true);
+        setStateOfGame("Get double of your insurance");
+        setBankRoll(bankRoll + insurance * 2);
+      } else if (
+        getHandScore(dealerHand) === 21 &&
+        getHandScore(playerHand) === 21
+      ) {
+        isGameOver(true);
+        setStateOfGame("Get double of your insurance and your bet back");
+        setBankRoll(bankRoll + insurance * 2 + currentBet);
+      } else {
+        setIsPlayerTurn(true);
+        setBankRoll(bankRoll - insurance);
+      }
+    } else {
+      if (getHandScore(dealerHand) === 21 && getHandScore(playerHand) !== 21) {
+        isGameOver(true);
+        setStateOfGame("Loose");
+      } else if (
+        getHandScore(dealerHand) === 21 &&
+        getHandScore(playerHand) === 21
+      ) {
+        isGameOver(true);
+        setStateOfGame("Push");
+      } else {
+        setIsPlayerTurn(true);
+      }
+    }
+    maybeDealerGotBlackJack(false);
   };
 
   useEffect(
@@ -228,9 +267,23 @@ function App() {
       {(!isGameStarted || isGameOver) && <Bets chosenBet={handleBetChosen} />}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
-          <button onClick={playerDrawCard}>Draw</button>
-          <button onClick={playerStand}>Stand</button>
-          <button onClick={playerDoubleDown}>Double Down</button>
+          {!maybeDealerGotBlackJack && (
+            <>
+              <button onClick={playerDrawCard}>Draw</button>
+              <button onClick={playerStand}>Stand</button>
+              <button onClick={playerDoubleDown}>Double Down</button>
+            </>
+          )}
+          {maybeDealerGotBlackJack && (
+            <>
+              <button onClick={() => playerTakeAssurance(true)}>
+                Assurance
+              </button>
+              <button onClick={() => playerTakeAssurance(false)}>
+                No assurance
+              </button>
+            </>
+          )}
         </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
