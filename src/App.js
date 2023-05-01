@@ -6,6 +6,18 @@ import Player from "./Player";
 import Bets from "./Bets";
 
 function App() {
+  const ranksValues = [
+    { ranks: ["two"], value: 2 },
+    { ranks: ["three"], value: 3 },
+    { ranks: ["four"], value: 4 },
+    { ranks: ["five"], value: 5 },
+    { ranks: ["six"], value: 6 },
+    { ranks: ["seven"], value: 7 },
+    { ranks: ["eight"], value: 8 },
+    { ranks: ["nine"], value: 9 },
+    { ranks: ["ten", "jack", "queen", "king"], value: 10 },
+  ];
+
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlayerTurn, setIsPlayerTurn] = useState(false);
@@ -67,17 +79,6 @@ function App() {
   };
 
   const getHandScore = (hand) => {
-    const ranksValues = [
-      { ranks: ["two"], value: 2 },
-      { ranks: ["three"], value: 3 },
-      { ranks: ["four"], value: 4 },
-      { ranks: ["five"], value: 5 },
-      { ranks: ["six"], value: 6 },
-      { ranks: ["seven"], value: 7 },
-      { ranks: ["eight"], value: 8 },
-      { ranks: ["nine"], value: 9 },
-      { ranks: ["ten", "jack", "queen", "king"], value: 10 },
-    ];
     let scoreWithoutAces = hand
       .filter((card) => card.rank !== "ace")
       .reduce(
@@ -235,6 +236,20 @@ function App() {
     maybeDealerGotBlackJack(false);
   };
 
+  const canPlayerSplit = () => {
+    const firstCardValue =
+      playerHand[0].rank === "ace"
+        ? 1
+        : ranksValues.find((x) => x.ranks.includes(playerHand[0].rank)).value;
+    const secondCardValue =
+      playerHand[0].rank === "ace"
+        ? 1
+        : ranksValues.find((x) => x.ranks.includes(playerHand[1].rank)).value;
+    return playerHand.length === 2 && firstCardValue === secondCardValue;
+  };
+
+  const playerSplit = () => {};
+
   useEffect(
     () => {
       if (stateOfGame === "Win") {
@@ -284,6 +299,7 @@ function App() {
               </button>
             </>
           )}
+          {canPlayerSplit() && <button onClick={playerSplit}>Split</button>}
         </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
