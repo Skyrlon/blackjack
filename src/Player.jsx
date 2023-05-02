@@ -8,6 +8,11 @@ const StyledPlayer = styled.div`
   --img-ratio: calc(500 / 726);
   --card-width: calc(100vw / 13);
   height: calc(var(--card-width) / var(--img-ratio));
+
+  & .set {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const StyledCard = styled.div`
@@ -20,16 +25,35 @@ const StyledCard = styled.div`
   background-image: url(${(props) => props.$imgPath});
 `;
 
-export default function Player({ hand, score }) {
+export default function Player({ hand, score, isSpliting }) {
   return (
     <StyledPlayer>
-      {hand.map((card) => (
-        <StyledCard
-          key={`${card.suitName} ${card.rank}`}
-          $imgPath={card.img}
-        ></StyledCard>
-      ))}
-      {score > 0 && <span>{score}</span>}
+      {!isSpliting && (
+        <>
+          {hand.map((card) => (
+            <StyledCard
+              key={`${card.suitName} ${card.rank}`}
+              $imgPath={card.img}
+            ></StyledCard>
+          ))}
+          {score > 0 && <span>{score}</span>}
+        </>
+      )}
+      {isSpliting && (
+        <>
+          {hand.map((set, index) => (
+            <div key={set[0].suitName} className="set">
+              {set.map((card) => (
+                <StyledCard
+                  key={`${card.suitName} ${card.rank}`}
+                  $imgPath={card.img}
+                ></StyledCard>
+              ))}
+              {<span>{score[index]}</span>}
+            </div>
+          ))}
+        </>
+      )}
     </StyledPlayer>
   );
 }

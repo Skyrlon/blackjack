@@ -25,6 +25,7 @@ function App() {
     useState(false);
   const [stateOfGame, setStateOfGame] = useState("");
   const [maybeDealerGotBlackJack, setMaybeDealerGotBlackJack] = useState(false);
+  const [isSpliting, setIsSpliting] = useState(false);
 
   const [bankRoll, setBankRoll] = useState(1000);
   const [currentBet, setCurrentBet] = useState(undefined);
@@ -85,9 +86,7 @@ function App() {
         (accumulator, currentValue) =>
           accumulator +
           Number(
-            ranksValues.find((x) =>
-              x.ranks.some((y) => y === currentValue.rank)
-            ).value
+            ranksValues.find((x) => x.ranks.includes(currentValue.rank)).value
           ),
         0
       );
@@ -194,6 +193,7 @@ function App() {
     setIsGameOver(false);
     setIsPlayerTurn(false);
     setIsPlayerStoppedDrawCards(false);
+    setIsSpliting(false);
     setStateOfGame("");
     playerHand.length = 0;
     dealerHand.length = 0;
@@ -237,18 +237,28 @@ function App() {
   };
 
   const canPlayerSplit = () => {
-    const firstCardValue =
-      playerHand[0].rank === "ace"
-        ? 1
-        : ranksValues.find((x) => x.ranks.includes(playerHand[0].rank)).value;
-    const secondCardValue =
-      playerHand[0].rank === "ace"
-        ? 1
-        : ranksValues.find((x) => x.ranks.includes(playerHand[1].rank)).value;
-    return playerHand.length === 2 && firstCardValue === secondCardValue;
+    if (!isSpliting) {
+      const firstCardValue =
+        playerHand[0].rank === "ace"
+          ? 1
+          : ranksValues.find((x) => x.ranks.includes(playerHand[0].rank)).value;
+      const secondCardValue =
+        playerHand[0].rank === "ace"
+          ? 1
+          : ranksValues.find((x) => x.ranks.includes(playerHand[1].rank)).value;
+      return playerHand.length === 2 && firstCardValue === secondCardValue;
+    } else {
+      return true;
+    }
   };
 
-  const playerSplit = () => {};
+  const playerSplit = () => {
+    setIsSpliting(true);
+    const firstSet = [playerHand[0], cards[0]];
+    const secondSet = [playerHand[1], cards[1]];
+    setPlayerHand([firstSet, secondSet]);
+    setCards(cards.slice(2));
+  };
 
   useEffect(
     () => {
@@ -278,7 +288,15 @@ function App() {
         showSecondCard={isPlayerStoppedDrawCards}
       />
       <Deck />
-      <Player hand={playerHand} score={getHandScore(playerHand)} />
+      <Player
+        isSpliting={isSpliting}
+        hand={playerHand}
+        score={
+          isSpliting
+            ? [getHandScore(playerHand[0]), getHandScore(playerHand[1])]
+            : getHandScore(playerHand)
+        }
+      />
       {(!isGameStarted || isGameOver) && <Bets chosenBet={handleBetChosen} />}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
@@ -299,7 +317,7 @@ function App() {
               </button>
             </>
           )}
-          {canPlayerSplit() && <button onClick={playerSplit}>Split</button>}
+          {canPlayerSplit() && !isSpliting && <button onClick={playerSplit}>Split</button>}
         </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
