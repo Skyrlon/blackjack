@@ -243,7 +243,7 @@ function App() {
           ? 1
           : ranksValues.find((x) => x.ranks.includes(playerHand[0].rank)).value;
       const secondCardValue =
-        playerHand[0].rank === "ace"
+        playerHand[1].rank === "ace"
           ? 1
           : ranksValues.find((x) => x.ranks.includes(playerHand[1].rank)).value;
       return playerHand.length === 2 && firstCardValue === secondCardValue;
@@ -317,7 +317,9 @@ function App() {
               </button>
             </>
           )}
-          {canPlayerSplit() && !isSpliting && <button onClick={playerSplit}>Split</button>}
+          {canPlayerSplit() && !isSpliting && (
+            <button onClick={playerSplit}>Split</button>
+          )}
         </>
       )}
       {isGameOver && <span>{stateOfGame}</span>}
