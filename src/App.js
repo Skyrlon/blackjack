@@ -26,6 +26,7 @@ function App() {
   const [stateOfGame, setStateOfGame] = useState("");
   const [maybeDealerGotBlackJack, setMaybeDealerGotBlackJack] = useState(false);
   const [isSpliting, setIsSpliting] = useState(false);
+  const [activeSplittingSet, setActiveSplittingSet] = useState(0);
 
   const [bankRoll, setBankRoll] = useState(1000);
   const [currentBet, setCurrentBet] = useState(undefined);
@@ -105,7 +106,11 @@ function App() {
 
   const playerDrawCard = () => {
     let newPlayerHand = [...playerHand];
-    newPlayerHand.push(cards[0]);
+    if (isSpliting) {
+      newPlayerHand[activeSplittingSet].push(cards[0]);
+    } else {
+      newPlayerHand.push(cards[0]);
+    }
     setPlayerHand([...newPlayerHand]);
     setCards(cards.slice(1));
     if (getHandScore(newPlayerHand) > 21) {
@@ -254,6 +259,7 @@ function App() {
 
   const playerSplit = () => {
     setIsSpliting(true);
+    setActiveSplittingSet(0);
     const firstSet = [playerHand[0], cards[0]];
     const secondSet = [playerHand[1], cards[1]];
     setPlayerHand([firstSet, secondSet]);
