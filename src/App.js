@@ -6,18 +6,6 @@ import Player from "./Player";
 import Bets from "./Bets";
 
 function App() {
-  const ranksValues = [
-    { ranks: ["two"], value: 2 },
-    { ranks: ["three"], value: 3 },
-    { ranks: ["four"], value: 4 },
-    { ranks: ["five"], value: 5 },
-    { ranks: ["six"], value: 6 },
-    { ranks: ["seven"], value: 7 },
-    { ranks: ["eight"], value: 8 },
-    { ranks: ["nine"], value: 9 },
-    { ranks: ["ten", "jack", "queen", "king"], value: 10 },
-  ];
-
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
   const [isPlayerTurn, setIsPlayerTurn] = useState(false);
@@ -46,6 +34,19 @@ function App() {
 
   const setSuit = (suitName) => {
     let suit = [];
+    const ranksValues = [
+      { ranks: ["ace"], value: 1 },
+      { ranks: ["two"], value: 2 },
+      { ranks: ["three"], value: 3 },
+      { ranks: ["four"], value: 4 },
+      { ranks: ["five"], value: 5 },
+      { ranks: ["six"], value: 6 },
+      { ranks: ["seven"], value: 7 },
+      { ranks: ["eight"], value: 8 },
+      { ranks: ["nine"], value: 9 },
+      { ranks: ["ten", "jack", "queen", "king"], value: 10 },
+    ];
+
     const ranks = [
       "ace",
       "two",
@@ -67,6 +68,7 @@ function App() {
         rank,
         suitName,
         img: `/assets/${suitName}_${rank}.png`,
+        value: ranksValues.find((x) => x.ranks.includes(rank)).value,
       })
     );
     return suit;
@@ -84,11 +86,7 @@ function App() {
     let scoreWithoutAces = hand
       .filter((card) => card.rank !== "ace")
       .reduce(
-        (accumulator, currentValue) =>
-          accumulator +
-          Number(
-            ranksValues.find((x) => x.ranks.includes(currentValue.rank)).value
-          ),
+        (accumulator, currentValue) => accumulator + Number(currentValue.value),
         0
       );
     if (hand.some((card) => card.rank === "ace")) {
@@ -243,15 +241,9 @@ function App() {
 
   const canPlayerSplit = () => {
     if (!isSpliting) {
-      const firstCardValue =
-        playerHand[0].rank === "ace"
-          ? 1
-          : ranksValues.find((x) => x.ranks.includes(playerHand[0].rank)).value;
-      const secondCardValue =
-        playerHand[1].rank === "ace"
-          ? 1
-          : ranksValues.find((x) => x.ranks.includes(playerHand[1].rank)).value;
-      return playerHand.length === 2 && firstCardValue === secondCardValue;
+      return (
+        playerHand.length === 2 && playerHand[0].value === playerHand[1].value
+      );
     } else {
       return true;
     }
