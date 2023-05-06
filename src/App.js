@@ -34,41 +34,29 @@ function App() {
 
   const setSuit = (suitName) => {
     let suit = [];
+
     const ranksValues = [
-      { ranks: ["ace"], value: 1 },
-      { ranks: ["two"], value: 2 },
-      { ranks: ["three"], value: 3 },
-      { ranks: ["four"], value: 4 },
-      { ranks: ["five"], value: 5 },
-      { ranks: ["six"], value: 6 },
-      { ranks: ["seven"], value: 7 },
-      { ranks: ["eight"], value: 8 },
-      { ranks: ["nine"], value: 9 },
-      { ranks: ["ten", "jack", "queen", "king"], value: 10 },
+      { rank: "ace", value: 1 },
+      { rank: "two", value: 2 },
+      { rank: "three", value: 3 },
+      { rank: "four", value: 4 },
+      { rank: "five", value: 5 },
+      { rank: "six", value: 6 },
+      { rank: "seven", value: 7 },
+      { rank: "eight", value: 8 },
+      { rank: "nine", value: 9 },
+      { rank: "ten", value: 10 },
+      { rank: "jack", value: 10 },
+      { rank: "queen", value: 10 },
+      { rank: "king", value: 10 },
     ];
 
-    const ranks = [
-      "ace",
-      "two",
-      "three",
-      "four",
-      "five",
-      "six",
-      "seven",
-      "eight",
-      "nine",
-      "ten",
-      "jack",
-      "queen",
-      "king",
-    ];
-
-    ranks.forEach((rank) =>
+    ranksValues.forEach((x) =>
       suit.push({
-        rank,
+        rank: x.rank,
         suitName,
-        img: `/assets/${suitName}_${rank}.png`,
-        value: ranksValues.find((x) => x.ranks.includes(rank)).value,
+        img: `/assets/${suitName}_${x.rank}.png`,
+        value: x.value,
       })
     );
     return suit;
@@ -236,7 +224,7 @@ function App() {
         setIsPlayerTurn(true);
       }
     }
-    maybeDealerGotBlackJack(false);
+    setMaybeDealerGotBlackJack(false);
   };
 
   const canPlayerSplit = () => {
