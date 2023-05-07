@@ -121,7 +121,9 @@ function App() {
   };
 
   const playerStand = () => {
-    if (getHandScore(dealerHand) > getHandScore(playerHand)) {
+    if (isSpliting && activeSplittingSet === 0) {
+      setActiveSplittingSet(1);
+    } else if (getHandScore(dealerHand) > getHandScore(playerHand)) {
       setIsGameOver(true);
       setStateOfGame("Loose");
     } else if (
