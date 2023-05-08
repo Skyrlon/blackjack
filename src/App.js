@@ -284,6 +284,7 @@ function App() {
             ? [getHandScore(playerHand[0]), getHandScore(playerHand[1])]
             : getHandScore(playerHand)
         }
+        activeSet={activeSplittingSet}
       />
       {(!isGameStarted || isGameOver) && <Bets chosenBet={handleBetChosen} />}
       {isGameStarted && !isGameOver && isPlayerTurn && (

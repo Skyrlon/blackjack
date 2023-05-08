@@ -25,7 +25,14 @@ const StyledCard = styled.div`
   background-image: url(${(props) => props.$imgPath});
 `;
 
-export default function Player({ hand, score, isSpliting }) {
+const StyledSet = styled.div`
+border-width: ${(props) => (props.$isActive ? "1px" : "0px")};
+border-style: solid;
+border-color:red;
+
+`;
+
+export default function Player({ hand, score, isSpliting, activeSet }) {
   return (
     <StyledPlayer>
       {!isSpliting && (
@@ -42,7 +49,11 @@ export default function Player({ hand, score, isSpliting }) {
       {isSpliting && (
         <>
           {hand.map((set, index) => (
-            <div key={set[0].suitName} className="set">
+            <StyledSet
+              key={set[0].suitName}
+              className="set"
+              $isActive={index === activeSet}
+            >
               {set.map((card) => (
                 <StyledCard
                   key={`${card.suitName} ${card.rank}`}
@@ -50,7 +61,7 @@ export default function Player({ hand, score, isSpliting }) {
                 ></StyledCard>
               ))}
               {<span>{score[index]}</span>}
-            </div>
+            </StyledSet>
           ))}
         </>
       )}
