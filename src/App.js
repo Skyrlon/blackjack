@@ -241,6 +241,7 @@ function App() {
 
   const playerSplit = () => {
     setIsSpliting(true);
+    setBankRoll(bankRoll - currentBet);
     setActiveSplittingSet(0);
     const firstSet = [playerHand[0], cards[0]];
     const secondSet = [playerHand[1], cards[1]];
