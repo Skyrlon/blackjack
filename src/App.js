@@ -103,6 +103,13 @@ function App() {
       setIsGameOver(true);
       setStateOfGame("Busted");
     }
+    if (
+      isSpliting &&
+      activeSplittingSet === 0 &&
+      getHandScore(newPlayerHand[activeSplittingSet]) > 21
+    ) {
+      setActiveSplittingSet(1);
+    }
   };
 
   const playerDoubleDown = () => {
