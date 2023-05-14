@@ -110,6 +110,18 @@ function App() {
     ) {
       setActiveSplittingSet(1);
     }
+    if (
+      isSpliting &&
+      activeSplittingSet === 1 &&
+      getHandScore(newPlayerHand[activeSplittingSet]) > 21
+    ) {
+      if (getHandScore(newPlayerHand[0]) > 21) {
+        setIsGameOver(true);
+        setStateOfGame("Busted");
+      } else {
+        dealerDrawCards();
+      }
+    }
   };
 
   const playerDoubleDown = () => {
