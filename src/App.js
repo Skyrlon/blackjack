@@ -299,6 +299,7 @@ function App() {
       <Player
         isSpliting={isSpliting}
         hand={playerHand}
+        currentBet={currentBet}
         score={
           isSpliting
             ? [getHandScore(playerHand[0]), getHandScore(playerHand[1])]

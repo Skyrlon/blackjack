@@ -13,6 +13,17 @@ const StyledPlayer = styled.div`
     display: flex;
     flex-direction: row;
   }
+
+  & .bet {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid black;
+    border-radius: 100%;
+  }
 `;
 
 const StyledCard = styled.div`
@@ -26,13 +37,18 @@ const StyledCard = styled.div`
 `;
 
 const StyledSet = styled.div`
-border-width: ${(props) => (props.$isActive ? "1px" : "0px")};
-border-style: solid;
-border-color:red;
-
+  border-width: ${(props) => (props.$isActive ? "1px" : "0px")};
+  border-style: solid;
+  border-color: red;
 `;
 
-export default function Player({ hand, score, isSpliting, activeSet }) {
+export default function Player({
+  hand,
+  currentBet,
+  score,
+  isSpliting,
+  activeSet,
+}) {
   return (
     <StyledPlayer>
       {!isSpliting && (
@@ -43,6 +59,7 @@ export default function Player({ hand, score, isSpliting, activeSet }) {
               $imgPath={card.img}
             ></StyledCard>
           ))}
+          {currentBet > 0 && <span className="bet">{currentBet}</span>}
           {score > 0 && <span>{score}</span>}
         </>
       )}
@@ -60,6 +77,7 @@ export default function Player({ hand, score, isSpliting, activeSet }) {
                   $imgPath={card.img}
                 ></StyledCard>
               ))}
+              {currentBet > 0 && <span className="bet">{currentBet}</span>}
               {<span>{score[index]}</span>}
             </StyledSet>
           ))}
