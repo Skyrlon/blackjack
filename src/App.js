@@ -270,6 +270,28 @@ function App() {
 
   useEffect(
     () => {
+      if (isSpliting) {
+        if (
+          playerHand.every(
+            (set) =>
+              getHandScore(set) > getHandScore(dealerHand) &&
+              getHandScore(set) < 22
+          )
+        ) {
+          setBankRoll(bankRoll + currentBet * 4);
+        } else if (
+          playerHand.some(
+            (set) =>
+              getHandScore(set) > getHandScore(dealerHand) &&
+              getHandScore(set) < 22
+          )
+        ) {
+          setBankRoll(bankRoll + currentBet * 4);
+        } else {
+          return;
+        }
+      }
+
       if (stateOfGame === "Win") {
         setBankRoll(bankRoll + currentBet * 2);
       }
@@ -284,7 +306,7 @@ function App() {
       }
     },
     // eslint-disable-next-line
-    [stateOfGame]
+    [isGameOver]
   );
 
   return (
