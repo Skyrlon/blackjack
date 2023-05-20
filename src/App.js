@@ -63,10 +63,22 @@ function App() {
   };
 
   const shuffleCards = () => {
-    const suffledDeck = getDeck()
+    let suffledDeck = getDeck()
       .map((value) => ({ value, sort: Math.random() }))
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
+
+    /* const valueOfPairs = 10;
+    const pairsCards = suffledDeck
+      .filter((card) => card.value === valueOfPairs)
+      .slice(0, 2);
+    suffledDeck = suffledDeck.filter((card) =>
+      !pairsCards.some(
+        (x) => card.rank === x.rank && card.suitName === x.suitName
+      )
+    );
+    suffledDeck.splice(0, 0, pairsCards[0]);
+    suffledDeck.splice(2, 0, pairsCards[1]); */
     return suffledDeck;
   };
 
