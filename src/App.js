@@ -72,10 +72,11 @@ function App() {
     const pairsCards = suffledDeck
       .filter((card) => card.value === valueOfPairs)
       .slice(0, 2);
-    suffledDeck = suffledDeck.filter((card) =>
-      !pairsCards.some(
-        (x) => card.rank === x.rank && card.suitName === x.suitName
-      )
+    suffledDeck = suffledDeck.filter(
+      (card) =>
+        !pairsCards.some(
+          (x) => card.rank === x.rank && card.suitName === x.suitName
+        )
     );
     suffledDeck.splice(0, 0, pairsCards[0]);
     suffledDeck.splice(2, 0, pairsCards[1]); */
@@ -201,8 +202,8 @@ function App() {
 
   const drawFirstCards = () => {
     const suffledDeck = shuffleCards();
-    const newDealerCards = [suffledDeck[0], suffledDeck[2]];
-    const newPlayerCards = [suffledDeck[1], suffledDeck[3]];
+    const newDealerCards = [suffledDeck[1], suffledDeck[3]];
+    const newPlayerCards = [suffledDeck[0], suffledDeck[2]];
     setDealerHand([...dealerHand, ...newDealerCards]);
     setPlayerHand([...playerHand, ...newPlayerCards]);
     setIsPlayerTurn(true);
