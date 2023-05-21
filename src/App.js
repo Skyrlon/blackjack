@@ -349,7 +349,9 @@ function App() {
             <>
               <button onClick={playerDrawCard}>Draw</button>
               <button onClick={playerStand}>Stand</button>
-              <button onClick={playerDoubleDown}>Double Down</button>
+              {!isSpliting && (
+                <button onClick={playerDoubleDown}>Double Down</button>
+              )}
             </>
           )}
           {maybeDealerGotBlackJack && (
