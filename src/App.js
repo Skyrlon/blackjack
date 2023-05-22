@@ -68,7 +68,7 @@ function App() {
       .sort((a, b) => a.sort - b.sort)
       .map(({ value }) => value);
 
-    /* const valueOfPairs = 10;
+    const valueOfPairs = 10;
     const pairsCards = suffledDeck
       .filter((card) => card.value === valueOfPairs)
       .slice(0, 2);
@@ -79,7 +79,7 @@ function App() {
         )
     );
     suffledDeck.splice(0, 0, pairsCards[0]);
-    suffledDeck.splice(2, 0, pairsCards[1]); */
+    suffledDeck.splice(2, 0, pairsCards[1]);
     return suffledDeck;
   };
 
@@ -183,17 +183,14 @@ function App() {
       newDealerHand.push(cards[i]);
       i++;
     }
+    setIsGameOver(true);
     if (getHandScore(newDealerHand) > 21) {
-      setIsGameOver(true);
       setStateOfGame("Win");
     } else if (getHandScore(newDealerHand) > getHandScore(playerHand)) {
-      setIsGameOver(true);
       setStateOfGame("Loose");
     } else if (getHandScore(newDealerHand) === getHandScore(playerHand)) {
-      setIsGameOver(true);
       setStateOfGame("Push");
     } else if (getHandScore(newDealerHand) < getHandScore(playerHand)) {
-      setIsGameOver(true);
       setStateOfGame("Win");
     }
     setDealerHand([...newDealerHand]);
@@ -287,34 +284,33 @@ function App() {
         if (
           playerHand.every(
             (set) =>
-              getHandScore(set) > getHandScore(dealerHand) &&
-              getHandScore(set) < 22
+              (getHandScore(set) > getHandScore(dealerHand) &&
+                getHandScore(set) < 22) ||
+              (getHandScore(dealerHand) > 21 && getHandScore(set) < 22)
           )
         ) {
+          setStateOfGame("Both set win");
           setBankRoll(bankRoll + currentBet * 4);
         } else if (
           playerHand.some(
             (set) =>
-              getHandScore(set) > getHandScore(dealerHand) &&
-              getHandScore(set) < 22
+              (getHandScore(set) > getHandScore(dealerHand) &&
+                getHandScore(set) < 22) ||
+              (getHandScore(dealerHand) > 21 && getHandScore(set) < 22)
           )
         ) {
-          setBankRoll(bankRoll + currentBet * 4);
+          setStateOfGame("One set win");
+          setBankRoll(bankRoll + currentBet * 2);
         } else {
-          return;
+          setStateOfGame("Both Loose");
         }
-      }
-
-      if (stateOfGame === "Win") {
+      } else if (stateOfGame === "Win") {
         setBankRoll(bankRoll + currentBet * 2);
-      }
-      if (stateOfGame === "Busted" || stateOfGame === "Loose") {
+      } else if (stateOfGame === "Busted" || stateOfGame === "Loose") {
         return;
-      }
-      if (stateOfGame === "Push") {
+      } else if (stateOfGame === "Push") {
         setBankRoll(bankRoll + currentBet);
-      }
-      if (stateOfGame === "Black Jack") {
+      } else if (stateOfGame === "Black Jack") {
         setBankRoll(bankRoll + currentBet * 2.5);
       }
     },
