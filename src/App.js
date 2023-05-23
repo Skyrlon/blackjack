@@ -281,29 +281,22 @@ function App() {
   useEffect(
     () => {
       if (isSpliting) {
-        if (
-          playerHand.every(
-            (set) =>
-              (getHandScore(set) > getHandScore(dealerHand) &&
-                getHandScore(set) < 22) ||
-              (getHandScore(dealerHand) > 21 && getHandScore(set) < 22)
-          )
-        ) {
-          setStateOfGame("Both set win");
-          setBankRoll(bankRoll + currentBet * 4);
-        } else if (
-          playerHand.some(
-            (set) =>
-              (getHandScore(set) > getHandScore(dealerHand) &&
-                getHandScore(set) < 22) ||
-              (getHandScore(dealerHand) > 21 && getHandScore(set) < 22)
-          )
-        ) {
-          setStateOfGame("One set win");
-          setBankRoll(bankRoll + currentBet * 2);
-        } else {
-          setStateOfGame("Both Loose");
-        }
+        const numberOfWinSets = playerHand.filter(
+          (set) =>
+            (getHandScore(set) > getHandScore(dealerHand) &&
+              getHandScore(set) < 22) ||
+            (getHandScore(dealerHand) > 21 && getHandScore(set) < 22)
+        ).length;
+
+        const numberOfDrawSets = playerHand.filter(
+          (set) =>
+            getHandScore(set) === getHandScore(dealerHand) &&
+            getHandScore(set) < 22
+        ).length;
+
+        setBankRoll(
+          bankRoll + currentBet * (numberOfWinSets * 2 + numberOfDrawSets)
+        );
       } else if (stateOfGame === "Win") {
         setBankRoll(bankRoll + currentBet * 2);
       } else if (stateOfGame === "Busted" || stateOfGame === "Loose") {
