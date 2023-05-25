@@ -353,7 +353,7 @@ function App() {
               </button>
             </>
           )}
-          {canPlayerSplit() && !isSpliting && (
+          {!maybeDealerGotBlackJack && canPlayerSplit() && !isSpliting && (
             <button onClick={playerSplit}>Split</button>
           )}
         </>
