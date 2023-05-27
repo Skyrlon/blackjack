@@ -339,13 +339,21 @@ function App() {
               <button onClick={playerDrawCard}>Draw</button>
               <button onClick={playerStand}>Stand</button>
               {!isSpliting && (
-                <button onClick={playerDoubleDown}>Double Down</button>
+                <button
+                  disabled={currentBet > bankRoll}
+                  onClick={playerDoubleDown}
+                >
+                  Double Down
+                </button>
               )}
             </>
           )}
           {maybeDealerGotBlackJack && (
             <>
-              <button onClick={() => playerTakeAssurance(true)}>
+              <button
+                disabled={currentBet / 2 > bankRoll}
+                onClick={() => playerTakeAssurance(true)}
+              >
                 Assurance
               </button>
               <button onClick={() => playerTakeAssurance(false)}>
@@ -354,7 +362,9 @@ function App() {
             </>
           )}
           {!maybeDealerGotBlackJack && canPlayerSplit() && !isSpliting && (
-            <button onClick={playerSplit}>Split</button>
+            <button disabled={currentBet > bankRoll} onClick={playerSplit}>
+              Split
+            </button>
           )}
         </>
       )}
