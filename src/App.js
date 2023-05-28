@@ -331,7 +331,9 @@ function App() {
         }
         activeSet={activeSplittingSet}
       />
-      {(!isGameStarted || isGameOver) && <Bets chosenBet={handleBetChosen} />}
+      {(!isGameStarted || isGameOver) && (
+        <Bets bankRoll={bankRoll} chosenBet={handleBetChosen} />
+      )}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
           {!maybeDealerGotBlackJack && (

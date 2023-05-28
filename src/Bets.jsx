@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Bets({ chosenBet }) {
+export default function Bets({ bankRoll, chosenBet }) {
   const bets = [1, 5, 10, 50, 100, 500, 1000];
 
   const [currentBet, setCurrentBet] = useState(0);
@@ -13,7 +13,11 @@ export default function Bets({ chosenBet }) {
     <div>
       <div>
         {bets.map((bet) => (
-          <button key={bet} onClick={() => onClickButton(bet)}>
+          <button
+            key={bet}
+            disabled={currentBet + bet > bankRoll}
+            onClick={() => onClickButton(bet)}
+          >
             {bet}
           </button>
         ))}
