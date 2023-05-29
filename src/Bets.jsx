@@ -5,13 +5,25 @@ export default function Bets({ bankRoll, chosenBet }) {
 
   const [currentBet, setCurrentBet] = useState(0);
 
+  const [betsHistoric, setBetsHistoric] = useState([]);
+
   const onClickButton = (bet) => {
+    setBetsHistoric((bets) => [...bets, currentBet]);
     setCurrentBet((v) => v + bet);
+  };
+
+  const revertBet = () => {
+    const lastBet = betsHistoric[betsHistoric.length - 1];
+    setCurrentBet(lastBet);
+    setBetsHistoric((bets) => bets.filter((bet) => bet !== lastBet));
   };
 
   return (
     <div>
       <div>
+        <button disabled={betsHistoric.length === 0} onClick={revertBet}>
+          Revert
+        </button>
         {bets.map((bet) => (
           <button
             key={bet}
