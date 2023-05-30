@@ -27,7 +27,11 @@ export default function Bets({ bankRoll, chosenBet }) {
         {bets.map((bet) => (
           <button
             key={bet}
-            disabled={currentBet + bet > bankRoll}
+            disabled={
+              currentBet + bet > bankRoll ||
+              currentBet === 1000 ||
+              currentBet + bet > 1000
+            }
             onClick={() => onClickButton(bet)}
           >
             {bet}
