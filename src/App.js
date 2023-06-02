@@ -18,6 +18,7 @@ function App() {
 
   const [bankRoll, setBankRoll] = useState(1000);
   const [currentBet, setCurrentBet] = useState(undefined);
+  const [gains, setGains] = useState();
 
   const [cards, setCards] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -229,6 +230,7 @@ function App() {
       if (getHandScore(dealerHand) === 21 && getHandScore(playerHand) !== 21) {
         isGameOver(true);
         setStateOfGame("Get double of your insurance");
+        setGains(insurance * 2);
         setBankRoll(bankRoll + insurance * 2);
       } else if (
         getHandScore(dealerHand) === 21 &&
@@ -236,6 +238,7 @@ function App() {
       ) {
         isGameOver(true);
         setStateOfGame("Get double of your insurance and your bet back");
+        setGains(insurance * 2 + currentBet);
         setBankRoll(bankRoll + insurance * 2 + currentBet);
       } else {
         setIsPlayerTurn(true);
@@ -298,12 +301,16 @@ function App() {
           bankRoll + currentBet * (numberOfWinSets * 2 + numberOfDrawSets)
         );
       } else if (stateOfGame === "Win") {
+        setGains(currentBet * 2);
         setBankRoll(bankRoll + currentBet * 2);
       } else if (stateOfGame === "Busted" || stateOfGame === "Loose") {
+        setGains(0);
         return;
       } else if (stateOfGame === "Push") {
+        setGains(currentBet);
         setBankRoll(bankRoll + currentBet);
       } else if (stateOfGame === "Black Jack") {
+        setGains(currentBet * 2.5);
         setBankRoll(bankRoll + currentBet * 2.5);
       }
     },
@@ -370,7 +377,12 @@ function App() {
           )}
         </>
       )}
-      {isGameOver && <span>{stateOfGame}</span>}
+      {isGameOver && (
+        <>
+          <span>{stateOfGame}</span>
+          <span>Your gains : {gains}</span>
+        </>
+      )}
     </div>
   );
 }
