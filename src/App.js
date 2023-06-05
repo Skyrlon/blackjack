@@ -296,7 +296,7 @@ function App() {
             getHandScore(set) === getHandScore(dealerHand) &&
             getHandScore(set) < 22
         ).length;
-
+        setGains(currentBet * (numberOfWinSets * 2 + numberOfDrawSets));
         setBankRoll(
           bankRoll + currentBet * (numberOfWinSets * 2 + numberOfDrawSets)
         );
