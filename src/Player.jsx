@@ -9,11 +9,6 @@ const StyledPlayer = styled.div`
   --card-width: calc(100vw / 13);
   height: calc(var(--card-width) / var(--img-ratio));
 
-  & .set {
-    display: flex;
-    flex-direction: row;
-  }
-
   & .bet {
     display: flex;
     flex-direction: column;
@@ -23,6 +18,11 @@ const StyledPlayer = styled.div`
     height: 3rem;
     border: 1px solid black;
     border-radius: 100%;
+  }
+
+  & .cards {
+    display: flex;
+    flex-direction: row;
   }
 `;
 
@@ -37,9 +37,21 @@ const StyledCard = styled.div`
 `;
 
 const StyledSet = styled.div`
-  border-width: ${(props) => (props.$isActive ? "1px" : "0px")};
-  border-style: solid;
-  border-color: red;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & .score {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-width: ${(props) => (props.$isActive ? "1px" : "0px")};
+    border-style: solid;
+    border-color: red;
+    border-radius: 100%;
+  }
 `;
 
 export default function Player({
@@ -53,6 +65,7 @@ export default function Player({
     <StyledPlayer>
       {!isSpliting && (
         <>
+          {score > 0 && <span className="score">{score}</span>}
           {hand.map((card) => (
             <StyledCard
               key={`${card.suitName} ${card.rank}`}
@@ -60,25 +73,22 @@ export default function Player({
             ></StyledCard>
           ))}
           {currentBet > 0 && <span className="bet">{currentBet}</span>}
-          {score > 0 && <span>{score}</span>}
         </>
       )}
       {isSpliting && (
         <>
           {hand.map((set, index) => (
-            <StyledSet
-              key={set[0].suitName}
-              className="set"
-              $isActive={index === activeSet}
-            >
-              {set.map((card) => (
-                <StyledCard
-                  key={`${card.suitName} ${card.rank}`}
-                  $imgPath={card.img}
-                ></StyledCard>
-              ))}
+            <StyledSet key={set[0].suitName} $isActive={index === activeSet}>
+              {<span className="score">{score[index]}</span>}
+              <div className="cards">
+                {set.map((card) => (
+                  <StyledCard
+                    key={`${card.suitName} ${card.rank}`}
+                    $imgPath={card.img}
+                  ></StyledCard>
+                ))}
+              </div>
               {currentBet > 0 && <span className="bet">{currentBet}</span>}
-              {<span>{score[index]}</span>}
             </StyledSet>
           ))}
         </>

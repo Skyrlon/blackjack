@@ -2,12 +2,18 @@ import styled from "styled-components";
 
 const StyledDealer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 1rem;
   --img-ratio: calc(500 / 726);
   --card-width: calc(100vw / 13);
   height: calc(var(--card-width) / var(--img-ratio));
+
+  & .cards {
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const StyledCard = styled.div`
@@ -25,13 +31,15 @@ export default function Dealer({ hand, score, showSecondCard }) {
 
   return (
     <StyledDealer>
-      {hand.map((card, index) => (
-        <StyledCard
-          key={`${card.suitName} ${card.rank}`}
-          $imgPath={!showSecondCard && index === 1 ? backCardPath : card.img}
-        ></StyledCard>
-      ))}
       {score > 0 && showSecondCard && <span>{score}</span>}
+      <div className="cards">
+        {hand.map((card, index) => (
+          <StyledCard
+            key={`${card.suitName} ${card.rank}`}
+            $imgPath={!showSecondCard && index === 1 ? backCardPath : card.img}
+          ></StyledCard>
+        ))}
+      </div>
     </StyledDealer>
   );
 }
