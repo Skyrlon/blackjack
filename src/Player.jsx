@@ -64,16 +64,18 @@ export default function Player({
   return (
     <StyledPlayer>
       {!isSpliting && (
-        <>
+        <StyledSet>
           {score > 0 && <span className="score">{score}</span>}
-          {hand.map((card) => (
-            <StyledCard
-              key={`${card.suitName} ${card.rank}`}
-              $imgPath={card.img}
-            ></StyledCard>
-          ))}
+          <div className="cards">
+            {hand.map((card) => (
+              <StyledCard
+                key={`${card.suitName} ${card.rank}`}
+                $imgPath={card.img}
+              />
+            ))}
+          </div>
           {currentBet > 0 && <span className="bet">{currentBet}</span>}
-        </>
+        </StyledSet>
       )}
       {isSpliting && (
         <>
@@ -85,7 +87,7 @@ export default function Player({
                   <StyledCard
                     key={`${card.suitName} ${card.rank}`}
                     $imgPath={card.img}
-                  ></StyledCard>
+                  />
                 ))}
               </div>
               {currentBet > 0 && <span className="bet">{currentBet}</span>}
