@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Bets({ bankRoll, chosenBet }) {
+export default function Bets({ bankRoll, chosenBet, children }) {
   const bets = [1, 5, 10, 50, 100, 500, 1000];
 
   const [currentBet, setCurrentBet] = useState(0);
@@ -19,7 +19,8 @@ export default function Bets({ bankRoll, chosenBet }) {
   };
 
   return (
-    <div>
+    <dialog open>
+      <>{children}</>
       <div>
         <button disabled={betsHistoric.length === 0} onClick={revertBet}>
           Revert
@@ -42,6 +43,6 @@ export default function Bets({ bankRoll, chosenBet }) {
       <button disabled={currentBet === 0} onClick={() => chosenBet(currentBet)}>
         OK
       </button>
-    </div>
+    </dialog>
   );
 }

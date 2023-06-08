@@ -339,7 +339,14 @@ function App() {
         activeSet={activeSplittingSet}
       />
       {(!isGameStarted || isGameOver) && (
-        <Bets bankRoll={bankRoll} chosenBet={handleBetChosen} />
+        <Bets bankRoll={bankRoll} chosenBet={handleBetChosen}>
+          {isGameOver && (
+            <>
+              <span>{stateOfGame}</span>
+              <span>Your gains : {gains}</span>
+            </>
+          )}
+        </Bets>
       )}
       {isGameStarted && !isGameOver && isPlayerTurn && (
         <>
@@ -375,12 +382,6 @@ function App() {
               Split
             </button>
           )}
-        </>
-      )}
-      {isGameOver && (
-        <>
-          <span>{stateOfGame}</span>
-          <span>Your gains : {gains}</span>
         </>
       )}
     </div>
