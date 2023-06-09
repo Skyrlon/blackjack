@@ -1,4 +1,26 @@
 import { useState } from "react";
+import styled from "styled-components";
+
+const StyledBets = styled.dialog`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  box-sizing: border-box;
+  width: 25rem;
+  height: 15rem;
+  & .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    & span {
+      padding-bottom: 1rem;
+    }
+  }
+`;
 
 export default function Bets({ bankRoll, chosenBet, children }) {
   const bets = [1, 5, 10, 50, 100, 500, 1000];
@@ -19,12 +41,9 @@ export default function Bets({ bankRoll, chosenBet, children }) {
   };
 
   return (
-    <dialog open>
-      <>{children}</>
+    <StyledBets open>
+      <div className="text">{children}</div>
       <div>
-        <button disabled={betsHistoric.length === 0} onClick={revertBet}>
-          Revert
-        </button>
         {bets.map((bet) => (
           <button
             key={bet}
@@ -39,10 +58,18 @@ export default function Bets({ bankRoll, chosenBet, children }) {
           </button>
         ))}
       </div>
-      <div>{currentBet}</div>
-      <button disabled={currentBet === 0} onClick={() => chosenBet(currentBet)}>
-        OK
-      </button>
-    </dialog>
+      <span>Your current bet : {currentBet}</span>
+      <div>
+        <button
+          disabled={currentBet === 0}
+          onClick={() => chosenBet(currentBet)}
+        >
+          OK
+        </button>
+        <button disabled={betsHistoric.length === 0} onClick={revertBet}>
+          Revert
+        </button>
+      </div>
+    </StyledBets>
   );
 }
