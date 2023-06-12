@@ -339,7 +339,11 @@ function App() {
         activeSet={activeSplittingSet}
       />
       {(!isGameStarted || isGameOver) && (
-        <Bets bankRoll={bankRoll} chosenBet={handleBetChosen}>
+        <Bets
+          bankRoll={bankRoll}
+          chosenBet={handleBetChosen}
+          refillBankroll={() => setBankRoll(1000)}
+        >
           {isGameOver && (
             <>
               <span>{stateOfGame}</span>

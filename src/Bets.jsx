@@ -22,7 +22,12 @@ const StyledBets = styled.dialog`
   }
 `;
 
-export default function Bets({ bankRoll, chosenBet, children }) {
+export default function Bets({
+  bankRoll,
+  chosenBet,
+  children,
+  refillBankroll,
+}) {
   const bets = [1, 5, 10, 50, 100, 500, 1000];
 
   const [currentBet, setCurrentBet] = useState(0);
@@ -43,33 +48,43 @@ export default function Bets({ bankRoll, chosenBet, children }) {
   return (
     <StyledBets open>
       <div className="text">{children}</div>
-      <div>
-        {bets.map((bet) => (
-          <button
-            key={bet}
-            disabled={
-              currentBet + bet > bankRoll ||
-              currentBet === 1000 ||
-              currentBet + bet > 1000
-            }
-            onClick={() => onClickButton(bet)}
-          >
-            {bet}
-          </button>
-        ))}
-      </div>
-      <span>Your current bet : {currentBet}</span>
-      <div>
-        <button
-          disabled={currentBet === 0}
-          onClick={() => chosenBet(currentBet)}
-        >
-          OK
-        </button>
-        <button disabled={betsHistoric.length === 0} onClick={revertBet}>
-          Revert
-        </button>
-      </div>
+      {bankRoll > 0 && (
+        <>
+          <div>
+            {bets.map((bet) => (
+              <button
+                key={bet}
+                disabled={
+                  currentBet + bet > bankRoll ||
+                  currentBet === 1000 ||
+                  currentBet + bet > 1000
+                }
+                onClick={() => onClickButton(bet)}
+              >
+                {bet}
+              </button>
+            ))}
+          </div>
+          <span>Your current bet : {currentBet}</span>
+          <div>
+            <button
+              disabled={currentBet === 0}
+              onClick={() => chosenBet(currentBet)}
+            >
+              OK
+            </button>
+            <button disabled={betsHistoric.length === 0} onClick={revertBet}>
+              Revert
+            </button>
+          </div>
+        </>
+      )}
+      {bankRoll === 0 && (
+        <>
+          <span>Run off money</span>
+          <button onClick={refillBankroll}>Refill</button>
+        </>
+      )}
     </StyledBets>
   );
 }
