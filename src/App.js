@@ -352,41 +352,45 @@ function App() {
           )}
         </Bets>
       )}
+
       {isGameStarted && !isGameOver && isPlayerTurn && (
-        <>
-          {!maybeDealerGotBlackJack && (
-            <>
-              <button onClick={playerDrawCard}>Draw</button>
-              <button onClick={playerStand}>Stand</button>
-              {!isSpliting && (
+        <dialog className="modal-actions" open>
+          <span>Choose your action : </span>
+          <div className="actions-buttons">
+            {!maybeDealerGotBlackJack && (
+              <>
+                <button onClick={playerDrawCard}>Draw</button>
+                <button onClick={playerStand}>Stand</button>
+                {!isSpliting && (
+                  <button
+                    disabled={currentBet > bankRoll}
+                    onClick={playerDoubleDown}
+                  >
+                    Double Down
+                  </button>
+                )}
+              </>
+            )}
+            {maybeDealerGotBlackJack && (
+              <>
                 <button
-                  disabled={currentBet > bankRoll}
-                  onClick={playerDoubleDown}
+                  disabled={currentBet / 2 > bankRoll}
+                  onClick={() => playerTakeAssurance(true)}
                 >
-                  Double Down
+                  Assurance
                 </button>
-              )}
-            </>
-          )}
-          {maybeDealerGotBlackJack && (
-            <>
-              <button
-                disabled={currentBet / 2 > bankRoll}
-                onClick={() => playerTakeAssurance(true)}
-              >
-                Assurance
+                <button onClick={() => playerTakeAssurance(false)}>
+                  No assurance
+                </button>
+              </>
+            )}
+            {!maybeDealerGotBlackJack && canPlayerSplit() && !isSpliting && (
+              <button disabled={currentBet > bankRoll} onClick={playerSplit}>
+                Split
               </button>
-              <button onClick={() => playerTakeAssurance(false)}>
-                No assurance
-              </button>
-            </>
-          )}
-          {!maybeDealerGotBlackJack && canPlayerSplit() && !isSpliting && (
-            <button disabled={currentBet > bankRoll} onClick={playerSplit}>
-              Split
-            </button>
-          )}
-        </>
+            )}
+          </div>
+        </dialog>
       )}
     </div>
   );
