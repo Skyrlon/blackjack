@@ -1,16 +1,10 @@
 import { useState } from "react";
 import styled from "styled-components";
+import CustomModal from "./CustomModal";
 
-const StyledBets = styled.dialog`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  box-sizing: border-box;
-  width: 25rem;
-  height: 15rem;
+const StyledBets = styled(CustomModal)`
+  width: 100%;
+  height: 100%;
   & .text {
     display: flex;
     flex-direction: column;
@@ -46,7 +40,7 @@ export default function Bets({
   };
 
   return (
-    <StyledBets open>
+    <StyledBets>
       <div className="text">{children}</div>
       {bankRoll > 0 && (
         <>

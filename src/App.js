@@ -4,6 +4,7 @@ import Deck from "./Deck";
 import Dealer from "./Dealer";
 import Player from "./Player";
 import Bets from "./Bets";
+import CustomModal from "./CustomModal";
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
@@ -354,7 +355,7 @@ function App() {
       )}
 
       {isGameStarted && !isGameOver && isPlayerTurn && (
-        <dialog className="modal-actions" open>
+        <CustomModal>
           <span>Choose your action : </span>
           <div className="actions-buttons">
             {!maybeDealerGotBlackJack && (
@@ -390,7 +391,7 @@ function App() {
               </button>
             )}
           </div>
-        </dialog>
+        </CustomModal>
       )}
     </div>
   );
