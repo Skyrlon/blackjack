@@ -10,8 +10,13 @@ const StyledCustomModal = styled.dialog`
   box-sizing: border-box;
   width: 20rem;
   height: 15rem;
+  border-radius: 10%;
 `;
 
-export default function CustomModal({ children }) {
-  return <StyledCustomModal open>{children}</StyledCustomModal>;
+export default function CustomModal({ className, children }) {
+  return (
+    <StyledCustomModal className={className} open>
+      {children}
+    </StyledCustomModal>
+  );
 }

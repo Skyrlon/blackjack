@@ -3,8 +3,6 @@ import styled from "styled-components";
 import CustomModal from "./CustomModal";
 
 const StyledBets = styled(CustomModal)`
-  width: 100%;
-  height: 100%;
   & .text {
     display: flex;
     flex-direction: column;
