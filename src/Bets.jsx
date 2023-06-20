@@ -43,19 +43,18 @@ export default function Bets({
       {bankRoll > 0 && (
         <>
           <div>
-            {bets.map((bet) => (
-              <button
-                key={bet}
-                disabled={
+            {bets.map(
+              (bet) =>
+                !(
                   currentBet + bet > bankRoll ||
                   currentBet === 1000 ||
                   currentBet + bet > 1000
-                }
-                onClick={() => onClickButton(bet)}
-              >
-                {bet}
-              </button>
-            ))}
+                ) && (
+                  <button key={bet} onClick={() => onClickButton(bet)}>
+                    {bet}
+                  </button>
+                )
+            )}
           </div>
           <span>Your current bet : {currentBet}</span>
           <div>
