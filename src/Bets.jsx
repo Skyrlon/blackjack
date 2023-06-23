@@ -12,6 +12,27 @@ const StyledBets = styled(CustomModal)`
       padding-bottom: 1rem;
     }
   }
+
+  & .button-bet {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    border: 0px;
+    background-color: transparent;
+
+    & img {
+      width: 100%;
+    }
+  }
+
+  & .button-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-weight: bold;
+    color: white;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 export default function Bets({
@@ -50,8 +71,13 @@ export default function Bets({
                   currentBet === 1000 ||
                   currentBet + bet > 1000
                 ) && (
-                  <button key={bet} onClick={() => onClickButton(bet)}>
-                    {bet}
+                  <button
+                    className="button-bet "
+                    key={bet}
+                    onClick={() => onClickButton(bet)}
+                  >
+                    <img src="/assets/token.png" alt="token" />
+                    <span className="button-text">{bet}</span>
                   </button>
                 )
             )}
