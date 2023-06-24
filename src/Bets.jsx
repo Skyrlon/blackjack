@@ -15,8 +15,8 @@ const StyledBets = styled(CustomModal)`
 
   & .button-bet {
     position: relative;
-    width: 70px;
-    height: 70px;
+    width: 4rem;
+    height: 4rem;
     border: 0px;
     background-color: transparent;
 
@@ -63,6 +63,7 @@ export default function Bets({
       <div className="text">{children}</div>
       {bankRoll > 0 && (
         <>
+          <span>Place your bet : </span>
           <div>
             {bets.map(
               (bet) =>
@@ -72,7 +73,7 @@ export default function Bets({
                   currentBet + bet > 1000
                 ) && (
                   <button
-                    className="button-bet "
+                    className="button-bet"
                     key={bet}
                     onClick={() => onClickButton(bet)}
                   >
