@@ -41,7 +41,15 @@ export default function Bets({
   children,
   refillBankroll,
 }) {
-  const bets = [1, 5, 10, 50, 100, 500, 1000];
+  const bets = [
+    { value: 1, color: "brown" },
+    { value: 5, color: "red" },
+    { value: 10, color: "blue" },
+    { value: 50, color: "green" },
+    { value: 100, color: "black" },
+    { value: 500, color: "purple" },
+    { value: 1000, color: "orange" },
+  ];
 
   const [currentBet, setCurrentBet] = useState(0);
 
@@ -68,17 +76,17 @@ export default function Bets({
             {bets.map(
               (bet) =>
                 !(
-                  currentBet + bet > bankRoll ||
+                  currentBet + bet.value > bankRoll ||
                   currentBet === 1000 ||
-                  currentBet + bet > 1000
+                  currentBet + bet.value > 1000
                 ) && (
                   <button
                     className="button-bet"
-                    key={bet}
-                    onClick={() => onClickButton(bet)}
+                    key={bet.value}
+                    onClick={() => onClickButton(bet.value)}
                   >
-                    <img src="/assets/token.png" alt="token" />
-                    <span className="button-text">{bet}</span>
+                    <img src={`/assets/token_${bet.color}.png`} alt="token" />
+                    <span className="button-text">{bet.value}</span>
                   </button>
                 )
             )}
